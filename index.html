@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d9488">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="蔵書">
+  <title>蔵書</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 一覧 -->
+    <section id="view-list" class="view active">
+      <header class="header">
+        <h1>蔵書</h1>
+        <label class="search-box">
+          <span class="visually-hidden">蔵書を検索</span>
+          <input type="search" id="search-input" placeholder="検索" autocomplete="off" enterkeyhint="search">
+        </label>
+        <div id="sort-bar" class="sort-bar" data-mode="title" role="tablist" aria-label="並び替え">
+          <span class="sort-indicator" aria-hidden="true"></span>
+          <button type="button" class="sort-btn active" data-sort="title" role="tab" aria-selected="true">タイトル順</button>
+          <button type="button" class="sort-btn" data-sort="author" role="tab" aria-selected="false">著者順</button>
+        </div>
+      </header>
+      <div id="list-body" class="list-body">
+        <div id="list-sort-view" class="list-sort-view">
+          <div class="list-slide-viewport">
+            <div id="list-slide-track" class="list-slide-track" data-mode="title">
+              <main id="book-list-title" class="book-list book-list-panel" role="tabpanel" aria-live="polite"></main>
+              <main id="book-list-author" class="book-list book-list-panel" role="tabpanel" aria-live="polite"></main>
+            </div>
+          </div>
+        </div>
+        <main id="book-list-search" class="book-list book-list-search" hidden aria-live="polite"></main>
+      </div>
+      <button type="button" id="btn-add" class="fab" aria-label="本を追加">＋</button>
+    </section>
+
+    <!-- 登録・編集 -->
+    <section id="view-add" class="view">
+      <header class="header header-row">
+        <button type="button" id="btn-back" class="btn-text">戻る</button>
+        <h1 id="form-title">本を登録</h1>
+        <span class="header-spacer"></span>
+      </header>
+      <main class="form-panel">
+        <div id="camera-section" class="media-actions">
+          <label class="media-btn">
+            <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
+            📷 カメラ
+          </label>
+          <label class="media-btn media-btn-secondary">
+            <input type="file" id="gallery-input" accept="image/*" hidden>
+            🖼 写真を選ぶ
+          </label>
+        </div>
+        <p id="ocr-status" class="ocr-status" hidden></p>
+        <label class="field">
+          <span>タイトル</span>
+          <input type="text" id="input-title" autocomplete="off" placeholder="必須">
+        </label>
+        <label class="field">
+          <span>著者</span>
+          <input type="text" id="input-author" autocomplete="off">
+        </label>
+        <label class="field-checkbox">
+          <input type="checkbox" id="check-show-translator">
+          <span>訳者を表示する</span>
+        </label>
+        <label class="field field-translator" id="field-translator" hidden>
+          <span>訳者</span>
+          <input type="text" id="input-translator" autocomplete="off" placeholder="翻訳者名">
+        </label>
+        <label class="field">
+          <span>出版社</span>
+          <input type="text" id="input-publisher" autocomplete="off">
+        </label>
+        <button type="button" id="btn-save" class="btn-primary">保存</button>
+        <p id="form-mode-hint" class="form-hint" hidden>登録後も、詳細画面からいつでも編集できます。</p>
+      </main>
+    </section>
+
+    <!-- 詳細 -->
+    <section id="view-detail" class="view">
+      <header class="header header-row">
+        <button type="button" id="btn-detail-back" class="btn-text">戻る</button>
+        <h1>詳細</h1>
+        <span class="header-spacer"></span>
+      </header>
+      <main class="detail-panel">
+        <dl>
+          <dt>タイトル</dt>
+          <dd id="detail-title"></dd>
+          <dt>著者</dt>
+          <dd id="detail-author"></dd>
+          <div id="detail-translator-group" hidden>
+            <dt>訳者</dt>
+            <dd id="detail-translator"></dd>
+          </div>
+          <dt>出版社</dt>
+          <dd id="detail-publisher"></dd>
+        </dl>
+        <button type="button" id="btn-edit" class="btn-secondary">編集</button>
+        <button type="button" id="btn-delete" class="btn-danger">この本を削除</button>
+      </main>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
+  <script src="js/author-utils.js"></script>
+  <script src="js/gojuon.js"></script>
+  <script src="js/reading.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/enrich.js"></script>
+  <script src="js/ocr.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
